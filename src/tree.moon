@@ -25,10 +25,13 @@ createHelper = (xs, n) ->
 createNesting = (n) ->
   createHelper {}, n
 
+-- initialize the function
+resolveDollar = nil
+resolveComma = nil
+
 dollarHelper = (before, after) ->
   if (size after) == 0 then return before
   cursor = after[1]
-  print(inspect(before))
   if (isArray cursor)
     dollarHelper (append before, (resolveDollar cursor)), (tail after)
   else if cursor.text == '$'
@@ -46,7 +49,7 @@ commaHelper = (before, after) ->
   if (isArray cursor) and ((size cursor) > 0)
     head = cursor[1]
     if isArray head
-      commaHelper (append before, (resolveComma cursor)), (init after)
+      commaHelper (append before, (resolveComma cursor)), (tail after)
     else if head.text == ','
       commaHelper before, (concat (resolveComma (tail cursor)), (tail after))
     else

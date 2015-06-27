@@ -1,6 +1,45 @@
 
 tree = require 'src/tree'
 array = require 'src/array'
+-- inspect = require 'inspect'
+
+-- initialize the function
+runParse = nil
+shorten = nil
+
+parse = (code, filename) ->
+
+  buffer = nil
+
+  state = {
+    name: 'indent'
+    x: 1
+    y: 1
+    level: 1 -- inside list
+    indent: 0
+    indented: 0 -- counter
+    nest: 0 -- parentheses
+    path: filename
+  }
+  xs = {}
+  while (string.len code) > 0
+    {xs, buffer, state, code} = runParse xs, buffer, state, code
+  res = runParse xs, buffer, state, code
+  -- print(inspect(shorten res))
+  res = array.map res, tree.resolveDollar
+  res = array.map res, tree.resolveComma
+  res
+
+shorten = (xs) ->
+  if array.isArray xs
+    array.map xs, shorten
+  else
+    xs.text
+
+pare = (code, filename) ->
+  res = parse code, filename
+
+  shorten res
 
 -- eof
 
@@ -241,38 +280,5 @@ runParse = (xs, buffer, state, code) ->
         when '\n' then _indent_newilne    xs, buffer, state, code
         when ')'  then _indent_close      xs, buffer, state, code
         else           _indent_else       xs, buffer, state, code
-
-parse = (code, filename) ->
-
-  buffer = nil
-
-  state = {
-    name: 'indent'
-    x: 1
-    y: 1
-    level: 1 -- inside list
-    indent: 0
-    indented: 0 -- counter
-    nest: 0 -- parentheses
-    path: filename
-  }
-  xs = {}
-  while (string.len code) > 0
-    {xs, buffer, state, code} = runParse xs, buffer, state, code
-  res = runParse xs, buffer, state, code
-  res = array.map res, tree.resolveDollar
-  -- res = array.map res, tree.resolveComma
-  res
-
-shorten = (xs) ->
-  if array.isArray xs
-    array.map xs, shorten
-  else
-    xs.text
-
-pare = (code, filename) ->
-  res = parse code, filename
-
-  shorten res
 
 return {:parse, :pare}

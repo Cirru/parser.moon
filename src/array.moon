@@ -33,7 +33,7 @@ tail = (list) ->
   resultList = {}
   for key, value in pairs list
     if key > 1
-      resultList[key] = value
+      resultList[key - 1] = value
   resultList
 
 isArray = (list) ->
