@@ -1,6 +1,6 @@
 
-tree = require 'src/tree'
-array = require 'src/array'
+tree = require 'cirru-parser.tree'
+array = require 'cirru-parser.array'
 -- inspect = require 'inspect'
 
 -- initialize the function

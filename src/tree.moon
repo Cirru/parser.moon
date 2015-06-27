@@ -1,5 +1,5 @@
 
-array = require 'src/array'
+array = require 'cirru-parser.array'
 inspect = require 'inspect'
 
 concat = array.concat
