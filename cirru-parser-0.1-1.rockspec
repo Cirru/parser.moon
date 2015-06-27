@@ -16,7 +16,7 @@ dependencies = {
   "lua >= 5.1"
 }
 build = {
-  type = "module",
+  type = "builtin",
   modules = {
     ["cirru-parser"] = "cirru-parser/parser.lua",
     ["cirru-parser.tree"] = "cirru-parser/tree.lua",
